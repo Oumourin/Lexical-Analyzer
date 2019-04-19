@@ -94,19 +94,20 @@ def lexical_analysis(analysis_str: str):
                 pre_local = local
                 # ptr_copy = ptr
                 while local < ptr_len:
+                    ptr = ptr + ' '
                     if 'a' <= ptr[local] <= 'z':
                         if ptr[local] != 'v' or ptr[local+1] != 'a' or ptr[local+2] != 'r':
                             local += 1
                             while 'a' <= ptr[local] <= 'z' or '0' <= ptr[local] <= '9':
                                 local += 1
-                            temp_str = ptr[pre_local:local] + '              标识符'
+                            temp_str = ptr[pre_local:local] + '              标识符\n'
                             result_str += temp_str
                             pre_local = local
                         elif 'a' <= ptr[local+3] <= 'z' or '0' <= ptr[local+3] <= '9':
                             local += 4
                             while 'a' <= ptr[local] <= 'z' or '0' <= ptr[local] <= '9':
                                 local += 1
-                            temp_str = ptr[pre_local:local] + '            标识符'
+                            temp_str = ptr[pre_local:local] + '            标识符\n'
                             result_str += temp_str
                             pre_local = local
                             # ptr_copy = ptr_copy[local:]
@@ -121,10 +122,10 @@ def lexical_analysis(analysis_str: str):
                         while '0' <= ptr[local] <= '9':
                             local += 1
                         if 'a' <= ptr[local] <= 'z':
-                            temp_str = ptr[pre_local:local] + '         标识符不能以数字开头'
+                            temp_str = ptr[pre_local:local] + '         标识符不能以数字开头\n'
                             result_str += temp_str
                             pre_local = local
-                        temp_str = ptr[pre_local:local] + '         数字'
+                        temp_str = ptr[pre_local:local] + '         数字\n'
                         result_str += temp_str
                         pre_local = local
                     elif ptr[local] == ',':
@@ -174,9 +175,14 @@ def lexical_analysis(analysis_str: str):
 
 
 if __name__ == "__main__":
-    str1 = input("请输入待分析的字符串:")
+    read_file = open("Source.txt", "r")
+    write_file = open("result.txt", "w")
+    write_file.write(lexical_analysis(read_file.read()))
+    read_file.close()
+    write_file.close()
+    # str1 = input("请输入待分析的字符串:")
     # str2 = '  123  \n 123    123  adb abDaa ) ( ;'
-    print(lexical_analysis(str1))
+    # print(lexical_analysis(str1))
     # print(lexical_analysis(str1))
     # str3 = lexical_analysis(str2)
     # print(str3)
