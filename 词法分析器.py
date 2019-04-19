@@ -33,6 +33,11 @@ def mix_upper_lower(ptr: str, result_str: str):
     return result_str
 
 
+# def error_process(error_str: str):
+#     error = open("error.txt", 'a')
+#
+
+
 def lexical_analysis(analysis_str: str):
     analysis_str.replace('\r', ' ')
     wrap = analysis_str.find('\n')
