@@ -43,22 +43,9 @@ def lexical_analysis(analysis_str: str):
     analysis_str = analysis_str.rstrip()
     analysis_str = analysis_str + ' '
     # analysis_str_copy = analysis_str
-    to_be_process = []
+    # to_be_process = []
     result_str = '词法分析结果：\n'
-    space = analysis_str.find(' ')
-    # for ptr in analysis_str:
-    #     if ptr == ',':
-    #         result_str = result_str + ',                 标号,'
-    #     elif ptr == ';':
-    #         result_str = result_str + ';                 标号;'
-    #     elif ptr == '+':
-    #         result_str = result_str + '+                  '
-    # while space != -1:
-    #     space = analysis_str.find(' ')
-    #     to_be_process.append(analysis_str[0:space])
-    #     # print(analysis_str[0:space])
-    #     analysis_str = analysis_str[space+2:]
-    #     analysis_str.find(' ')
+    # space = analysis_str.find(' ')
     to_be_process = analysis_str.split()
     for ptr in to_be_process:
         if ptr.isdigit():
@@ -73,37 +60,6 @@ def lexical_analysis(analysis_str: str):
                     temp_str = ptr + '            标识符\n'
                     result_str += temp_str
             else:
-                # #  大小写混合字符串处理
-                # process_str = ptr
-                # lower_str = ''
-                # upper_str = ''
-                # local = 0
-                # length = len(process_str)
-                # while local < length:
-                #     if 'a' <= ptr[local] <= 'z':
-                #         process_str = ptr[local:]
-                #         process_str_add = process_str + ' '
-                #         for lower in process_str_add:
-                #             if 'a' <= lower <= 'z':
-                #                 lower_str += lower
-                #                 local += 1
-                #             else:
-                #                 temp_str = lower_str + '         标识符\n'
-                #                 result_str += temp_str
-                #                 lower_str = ''
-                #                 break
-                #     else:
-                #         process_str = ptr[local:]
-                #         process_str_add = process_str + ' '
-                #         for upper in process_str_add:
-                #             if 'A' <= upper <= 'Z':
-                #                 upper_str += upper
-                #                 local += 1
-                #             else:
-                #                 temp_str = upper_str + '       非法输入符号\n'
-                #                 result_str += temp_str
-                #                 upper_str = ''
-                #                 break
                 result_str = mix_upper_lower(ptr, result_str)
         elif len(ptr) == 1:
             if ptr == ',':
