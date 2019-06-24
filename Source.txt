@@ -1,0 +1,5 @@
+var a:=1
+ab
+ad
+bcDad
+123

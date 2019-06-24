@@ -33,6 +33,11 @@ def mix_upper_lower(ptr: str, result_str: str):
     return result_str
 
 
+# def error_process(error_str: str):
+#     error = open("error.txt", 'a')
+#
+
+
 def lexical_analysis(analysis_str: str):
     analysis_str.replace('\r', ' ')
     wrap = analysis_str.find('\n')
@@ -48,6 +53,7 @@ def lexical_analysis(analysis_str: str):
     # space = analysis_str.find(' ')
     to_be_process = analysis_str.split()
     for ptr in to_be_process:
+        ptr_len = len(ptr)
         if ptr.isdigit():
             temp_str = ptr + '            数字\n'
             result_str += temp_str
@@ -61,6 +67,10 @@ def lexical_analysis(analysis_str: str):
                     result_str += temp_str
             else:
                 result_str = mix_upper_lower(ptr, result_str)
+        elif ptr.isalnum():
+            if '0' <= ptr[0] <= '9':
+                temp_str += ptr + '               非法输入符号,标识符不能以数字开头\n'
+                result_str += temp_str
         elif len(ptr) == 1:
             if ptr == ',':
                 temp_str += ptr + '             标号,\n'
@@ -80,14 +90,89 @@ def lexical_analysis(analysis_str: str):
             elif ptr == ':':
                 temp_str += ptr + '               标号:\n'
                 result_str += temp_str
-        elif len(ptr) == 2:
+        elif len(ptr) >= 2:
             if ptr == ':=':
                 temp_str += ptr + '               标号:= \n'
                 result_str += temp_str
-        elif ptr.isalnum():
-            if '0' <= ptr[0] <= '9':
-                temp_str += ptr + '               非法输入符号,标识符不能以数字开头\n'
-                result_str += temp_str
+            else:
+                local = 0
+                pre_local = local
+                # ptr_copy = ptr
+                while local < ptr_len:
+                    ptr = ptr + ' '
+                    if 'a' <= ptr[local] <= 'z':
+                        if ptr[local] != 'v' or ptr[local+1] != 'a' or ptr[local+2] != 'r':
+                            local += 1
+                            while 'a' <= ptr[local] <= 'z' or '0' <= ptr[local] <= '9':
+                                local += 1
+                            temp_str = ptr[pre_local:local] + '              标识符\n'
+                            result_str += temp_str
+                            pre_local = local
+                        elif 'a' <= ptr[local+3] <= 'z' or '0' <= ptr[local+3] <= '9':
+                            local += 4
+                            while 'a' <= ptr[local] <= 'z' or '0' <= ptr[local] <= '9':
+                                local += 1
+                            temp_str = ptr[pre_local:local] + '            标识符\n'
+                            result_str += temp_str
+                            pre_local = local
+                            # ptr_copy = ptr_copy[local:]
+                        else:
+                            temp_str = 'var' + '         关键字'
+                            result_str += temp_str
+                            local += 3
+                            pre_local = local
+                            # ptr_copy = ptr_copy[local:]
+                    elif '1' <= ptr[local] <= '9':
+                        local += 1
+                        while '0' <= ptr[local] <= '9':
+                            local += 1
+                        if 'a' <= ptr[local] <= 'z':
+                            temp_str = ptr[pre_local:local] + '         标识符不能以数字开头\n'
+                            result_str += temp_str
+                            pre_local = local
+                        temp_str = ptr[pre_local:local] + '         数字\n'
+                        result_str += temp_str
+                        pre_local = local
+                    elif ptr[local] == ',':
+                        temp_str += ptr[pre_local:local] + '             标号,\n'
+                        result_str += temp_str
+                        local += 1
+                        pre_local = local
+                    elif ptr[local] == ';':
+                        temp_str += ptr[pre_local:local] + '             标号;\n'
+                        result_str += temp_str
+                        local += 1
+                        pre_local = local
+                    elif ptr[local] == '(':
+                        temp_str += ptr[pre_local:local] + '             标号(\n'
+                        result_str += temp_str
+                        local += 1
+                        pre_local = local
+                    elif ptr[local] == ')':
+                        temp_str += ptr[pre_local:local] + '              标号)\n'
+                        result_str += temp_str
+                        local += 1
+                        pre_local = local
+                    elif ptr[local] == '+':
+                        temp_str += ptr[pre_local:local] + '              标号+\n'
+                        result_str += temp_str
+                        local += 1
+                        pre_local = local
+                    elif ptr[local] == ':':
+                        if ptr[local+1] == '=':
+                            local += 2
+                            temp_str += ptr[pre_local:local] + '               标号:=\n'
+                            result_str += temp_str
+                            pre_local = local
+                        else:
+                            temp_str += ptr[pre_local:local] + '               标号:\n'
+                            result_str += temp_str
+                            local += 1
+                            pre_local = local
+                    # elif ptr.isalnum():
+                    #     if '0' <= ptr[0] <= '9':
+                    #         temp_str += ptr + '               非法输入符号,标识符不能以数字开头\n'
+                    #         result_str += temp_str
         else:
             temp_str += ptr + '                非法输入符号:\n'
             result_str += temp_str
@@ -95,9 +180,14 @@ def lexical_analysis(analysis_str: str):
 
 
 if __name__ == "__main__":
-    str1 = input("请输入待分析的字符串:")
+    read_file = open("Source.txt", "r")
+    write_file = open("result.txt", "w")
+    write_file.write(lexical_analysis(read_file.read()))
+    read_file.close()
+    write_file.close()
+    # str1 = input("请输入待分析的字符串:")
     # str2 = '  123  \n 123    123  adb abDaa ) ( ;'
-    print(lexical_analysis(str1))
+    # print(lexical_analysis(str1))
     # print(lexical_analysis(str1))
     # str3 = lexical_analysis(str2)
     # print(str3)
